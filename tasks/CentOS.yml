@@ -1,0 +1,5 @@
+---
+oh_my_zsh_packages:
+  - zsh
+  - git
+  - wget

@@ -1,0 +1,35 @@
+---
+# tasks file for rattermeyer.ohmyzsh
+- debug:
+    msg: "ansible_distribution={{ ansible_distribution }}"
+- name: gather os specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
+    - "{{ ansible_distribution }}.yml"
+
+- name: install zsh
+  package:
+    name: "{{ item }}"
+  with_items: "{{ oh_my_zsh_packages }}"
+
+- name: check if oy-my-sh is installed
+  stat:
+    path: "~/.oh-my-zsh"
+  register: stat_oh_my_zsh
+
+# install oh-my-zsh (only if not yet done)
+- name: install oh-my-zsh
+  block:
+    - name: Download zsh installer
+      get_url:
+        url: https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+        dest: /tmp/zsh-installer.sh
+        mode: 0744
+
+    - name: Execute the zsh-installer.sh
+      command: sh -c /tmp/zsh-installer.sh
+
+    - name: Remove the zsh-installer.sh
+      file: path=/tmp/zsh-installer.sh state=absent
+  when: stat_oh_my_zsh.stat.exists == False

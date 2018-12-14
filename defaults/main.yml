@@ -1,2 +1,18 @@
 ---
 # defaults file for rattermeyer.ohmyzsh
+oh_my_zsh_plugins:
+  - aws
+  - docker
+  - git
+  - gradle
+  - ng
+  - nomad
+  - npm
+  - python
+  - terraform
+  - tig
+  - tmux
+  - vagrant
+  - vault
+
+oh_my_zsh_theme: agnoster

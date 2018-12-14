@@ -33,3 +33,17 @@
     - name: Remove the zsh-installer.sh
       file: path=/tmp/zsh-installer.sh state=absent
   when: stat_oh_my_zsh.stat.exists == False
+
+# configure ohmyzsh plugins
+- name: configure oh-my-zsh plugins
+  lineinfile:
+    path: ~/.zshrc
+    regexp: '^plugins'
+    line: "plugins=( {{ oh_my_zsh_plugins | join(' ') }} )"
+
+# configure ohmyzsh theme
+- name: configure oh-my-zsh theme
+  lineinfile:
+    path: ~/.zshrc
+    regexp: '^ZSH_THEME'
+    line: "ZSH_THEME={{ oh_my_zsh_theme }}"
